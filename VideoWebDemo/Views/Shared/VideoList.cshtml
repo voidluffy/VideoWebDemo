@@ -1,0 +1,28 @@
+﻿
+@model PagedList<Article>
+<div class="well well-sm">
+    <div class="input-group" style="width:35%">
+        <span class="input-group-addon">转到第</span>
+        <input type="text" id="pagebox" class="form-control input-sm" />
+        <span class="input-group-addon">页</span>
+        <span class="input-group-btn"><button class="btn btn-primary btn-sm" id="goBtn">跳转</button></span>
+    </div>
+
+</div>
+<div id="errormsg"></div>
+@{Html.RenderPartial("_ArticleTable", Model);}
+<div class="text-center">
+    @Html.Pager(Model, new PagerOptions { PageIndexParameterName = "id", Id = "htmlPager", FirstPageText = "<<", LastPageText = ">>", NextPageText = ">", PrevPageText = "<", ContainerTagName = "ul", CssClass = "pagination pagination-sm", CurrentPagerItemTemplate = "<li class=\"active\"><a href=\"#\">{0}</a></li>", DisabledPagerItemTemplate = "<li class=\"disabled\"><a>{0}</a></li>", PagerItemTemplate = "<li>{0}</li>" })
+</div>
+@section Scripts{@{Html.RegisterMvcPagerScriptResource();}
+<script type="text/javascript">
+        $(function() {
+            $("#goBtn").click(function () {
+                var pager = Webdiyer.MvcPagers.getById("htmlPager");
+                if (pager != null) {
+                    pager.goToPage($("#pagebox").val());
+                } else { alert("找不到指定的MvcPager！"); }
+            });
+        });
+</script>
+}
